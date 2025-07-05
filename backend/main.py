@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+from routers import printer
 
-app = FastAPI()
+app = FastAPI(title="NozzleUI API")
+
+app.include_router(printer.router)
 
 @app.get("/")
 def read_root():
