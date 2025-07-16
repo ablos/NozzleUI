@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routers import printer
+from utils.config import config
 
 app = FastAPI(title="NozzleUI API")
 

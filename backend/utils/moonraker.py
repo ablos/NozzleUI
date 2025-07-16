@@ -1,10 +1,15 @@
 import httpx
+from utils.config import config
 
 class MoonrakerClient:
-    def __init__ (self, base_url: str):
-        self.base_url = base_url
+    def __init__ (self):
+        hostname = config.get_nested('moonraker', 'host', default='localhost')
+        port = config.get_nested('moonraker', 'port', default='7125')
+        
+        self.base_url = f"http://{hostname}:{port}"
+        
         self.client = httpx.AsyncClient(
-            base_url = base_url,
+            base_url = self.base_url,
             timeout = httpx.Timeout(10.0),
             limits = httpx.Limits(max_connections = 20, max_keepalive_connections = 5)
         )
@@ -28,4 +33,4 @@ class MoonrakerClient:
             return {"error": f"Unexpected error: {str(e)}", "connected": False}
         
 # Singleton
-moonraker = MoonrakerClient("http://192.168.1.3:7125")
+moonraker = MoonrakerClient()
